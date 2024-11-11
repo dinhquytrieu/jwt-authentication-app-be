@@ -41,15 +41,29 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(email: string, password: string) {
-    return this.usersService.create({ email, password });
+  async register(
+    firstName: string,
+    lastName: string,
+    phone: string,
+    address: string,
+    email: string,
+    password: string,
+  ) {
+    return this.usersService.create({
+      firstName,
+      lastName,
+      phone,
+      address,
+      email,
+      password,
+    });
   }
 
   async login(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = { email: user.email, sub: user._id };
-      return { token: this.jwtService.sign(payload) };
+      return { token: this.jwtService.sign(payload), user };
     }
     throw new UnauthorizedException('Invalid credentials');
   }

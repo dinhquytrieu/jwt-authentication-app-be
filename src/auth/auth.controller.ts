@@ -45,9 +45,33 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  // @Post('register')
+  // async register(@Body() registerDto: { email: string; password: string }) {
+  //   return this.authService.register(registerDto.email, registerDto.password);
+  // }
+
   @Post('register')
-  async register(@Body() registerDto: { email: string; password: string }) {
-    return this.authService.register(registerDto.email, registerDto.password);
+  async register(
+    @Body()
+    registerDto: {
+      firstName: string;
+      lastName: string;
+      phone: string;
+      address: string;
+      email: string;
+      password: string;
+    },
+  ) {
+    const { firstName, lastName, phone, address, email, password } =
+      registerDto;
+    return this.authService.register(
+      firstName,
+      lastName,
+      phone,
+      address,
+      email,
+      password,
+    );
   }
 
   @Post('login')
